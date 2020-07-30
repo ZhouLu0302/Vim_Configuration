@@ -1,0 +1,302 @@
+" 更新时间：2020-06-26
+
+" >>>>>> >定义快捷键的前缀，即 <Leader> >>>>>>
+let mapleader=";"
+" <<<<<< <定义快捷键的前缀 <<<<<<
+
+" >>>>>> 文件类型侦测> >>>>>>
+filetype on              "开启文件类型侦测
+filetype plugin on       "根据侦测到的不同类型加载对应的插件
+" <<<<<< <文件类型侦测 <<<<<<
+
+" >>>>>> 语法分析> >>>>>>
+syntax enable            "开启语法高亮功能
+syntax on                "允许用指定语法高亮配色方案替换默认方案
+" <<<<<< <语法分析 <<<<<<
+
+" >>>>>> 缩进> >>>>>>
+filetype indent on       "自适应不同语言的智能缩进
+set expandtab            "将制表符扩展为空格
+set tabstop=4            "设置编辑时制表符占用空格数
+set shiftwidth=4         "设置格式化时制表符占用空格数
+set softtabstop=4        "让 vim 把连续数量的空格视为一个制表符
+" <<<<<< <缩进 <<<<<<
+
+" >>>>>> 搜索> >>>>>>
+set incsearch            "开启实时搜索功能
+set ignorecase           "搜索时大小写不敏感
+set nocompatible         "关闭兼容模式
+set wildmenu             "vim 自身命令行模式智能补全
+set hlsearch             "高亮显示搜索结果
+" <<<<<< <搜索 <<<<<<
+
+" >>>>>> 辅助信息> >>>>>>
+set number               "开启行号显示
+set laststatus=2         "总是显示状态栏
+set ruler                "显示光标当前位置
+set cursorline           "高亮显示当前行
+set cursorcolumn         "高亮显示当前列
+set nowrap               "禁止折行
+
+set gcr=a:block-blinkon0 "禁止光标闪烁
+
+"set autowrite=1          "自动保存
+" <<<<<< <辅助信息 <<<<<<
+
+" >>>>>> 窗口&滚动条> >>>>>>
+" 禁止显示滚动条
+set guioptions-=l
+set guioptions-=L
+set guioptions-=r
+set guioptions-=R
+
+" 禁止显示菜单和工具条
+set guioptions-=m
+set guioptions-=T
+
+" 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
+fun! ToggleFullscreen()
+	call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
+endf
+
+" 全屏开/关快捷键
+map <silent> <F11> :call ToggleFullscreen()<CR>
+
+" 启动 vim 时自动全屏
+"autocmd VimEnter * call ToggleFullscreen()
+" <<<<<< <窗口&滚动条 <<<<<<
+
+" >>>>>> 美化> >>>>>>
+" 设置 gvim 显示字体
+set guifont=YaHei\ Consolas\ Hybrid\ 10.5
+" <<<<<< <美化 <<<<<<
+
+" >>>>>> 快捷键> >>>>>>
+" 定义快捷键在结对符之间跳转
+nmap <Leader>M %
+
+" *.cpp 和 *.h 间切换
+nmap <silent> <Leader>sw :FSHere<cr>
+
+" 定义:Man命令查看各类man信息的快捷键
+nmap <Leader>man :Man 3 <cword><CR>
+
+" 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。快捷键速记法：search in project
+nnoremap <Leader>sp :CtrlSF<CR>
+" <<<<<< <快捷键 <<<<<<
+
+" >>>>>> 代码折叠> >>>>>>
+"set foldmethod=indent   "基于缩进或语法进行代码折叠
+set foldmethod=syntax
+set nofoldenable         "启动 vim 时关闭折叠代码
+" <<<<<< <代码折叠 <<<<<<
+
+" >>>>>> 让配置变更立即生效> >>>>>>
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
+" <<<<<< <让配置变更立即生效 <<<<<<
+
+" >>>>>> 恢复上次文件打开位置> >>>>>>
+set viminfo='10,\"100,:20,%,n~/.viminfo
+au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+" <<<<<< <恢复上次文件打开位置 <<<<<<
+
+
+" >>>>>> 插件安装> >>>>>>
+" vundle 环境设置
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+" vundle 管理的插件列表必须位于 vundle#begin() 和 vundle#end() 之间
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+"Plugin 'altercation/vim-colors-solarized'
+Plugin 'tomasr/molokai'
+Plugin 'majutsushi/tagbar'
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'w0rp/ale'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'vim-airline'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'kshenoy/vim-signature'
+"Plugin 'vim-scripts/phd'
+"Plugin 'DoxygenToolkit.vim'
+"Plugin 'octol/vim-cpp-enhanced-highlight'
+"Plugin 'nathanaelkane/vim-indent-guides'
+"Plugin 'derekwyatt/vim-fswitch'
+"Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines'
+"Plugin 'vim-scripts/indexer.tar.gz'
+"Plugin 'vim-scripts/DfrankUtil'
+"Plugin 'vim-scripts/vimprj'
+"Plugin 'dyng/ctrlsf.vim'
+"Plugin 'terryma/vim-multiple-cursors'
+"Plugin 'vim-scripts/DrawIt'
+"Plugin 'SirVer/ultisnips'
+"Plugin 'ycm-core/YouCompleteMe'
+"Plugin 'derekwyatt/vim-protodef'
+"Plugin 'fholgado/minibufexpl.vim'
+"Plugin 'gcmt/wildfire.vim'
+"Plugin 'sjl/gundo.vim'
+"Plugin 'Lokaltog/vim-easymotion'
+"Plugin 'suan/vim-instant-markdown'
+"Plugin 'lilydjwg/fcitx.vim'
+
+" 插件列表结束
+call vundle#end()
+filetype plugin indent on
+" <<<<<< <插件安装 <<<<<<
+
+" >>>>>> 配色方案> >>>>>>
+set background=dark
+set t_Co=256
+"colorscheme solarized
+colorscheme molokai
+"colorscheme phd
+" <<<<<< <配色方案 <<<<<<
+
+" >>>>>> cscope> >>>>>>
+"---------------------------------------------------------------
+" cscope:建立数据库: cscope -Rbq;
+" F5 - 查找C符号
+" F6 - 查找字符串
+" F7 - 查找函数定义
+" F8 - 查找函数调用者
+"---------------------------------------------------------------
+if has("cscope")
+    set csprg=/usr/bin/cscope
+    set csto=1
+    set cst
+    set nocsverb
+    " Add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+    endif
+    set csverb
+endif
+
+:set cscopequickfix=s-,c-,d-,i-,t-,e-
+
+" nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+" F5 查找C符号; F6 查找字符串; F7 查找函数调用者
+nmap <silent> <F5> :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <F6> :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <F7> :cs find c <C-R>=expand("<cword>")<CR><CR>
+" <<<<<< <cscope <<<<<<
+
+" >>>>>> Tagbar> >>>>>>
+let tagbar_right=1         "设置 tagbar 子窗口的位置出现在主编辑区的右侧
+let tagbar_width=30        "设置标签子窗口的宽度
+let g:tagbar_autopreview=1 "开启自动预览（随着光标在标签上移动，顶部会出现一个实时的预览窗口）
+let g:tagbar_sort=0        "关闭排序，即按照标签本身在文件中的位置排序
+let g:tagbar_compact=1     "tagbar 子窗口中不显示冗余帮助信息
+"autocmd BufReadPost *.cpp,*.c,*.h,*.cc,*.cxx call tagbar#autoopen() "自动打开相关文件
+
+" 快捷键F9打开
+nmap <F9> :TagbarToggle<CR>
+" <<<<<< <Tagbar <<<<<<
+
+" >>>>>> NerdTree> >>>>>>
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+let NERDTreeWinSize=25         "设置 NERDTree 子窗口宽度
+let NERDTreeShowLineNumbers=1
+let NERDTreeAutoCenter=1
+let NERDTreeShowBookmarks=1
+let NERDTreeWinPos="left"      "设置 NERDTree 子窗口位置
+let NERDTreeMinimalUI=1        "NERDTree 子窗口中不显示冗余帮助信息
+let NERDTreeAutoDeleteBuffer=1 "删除文件时自动删除文件对应 buffer
+let NERDTreeShowHidden=1       "显示隐藏文件
+
+" 快捷键F2打开
+map <F2> :NERDTreeToggle<CR>
+" <<<<<< <NerdTree <<<<<<
+
+" >>>>>> NerdCommenter> >>>>>>
+let g:NERDSpaceDelims=1        "默认情况下，在注释分隔符后添加空格
+let g:NERDDefaultAlign='left'  "按行对齐注释分隔符左对齐，而不是按代码缩进
+let NERDCompactSexyComs=1      "多行注释时样子更好看
+" <<<<<< <NerdCommenter <<<<<<
+
+" >>>>>> ALE 动态语法检测> >>>>>>
+let g:ale_sign_column_always=1
+let g:ale_sign_error='✘'
+let g:ale_sign_warning='!'
+let g:ale_statusline_format=['✘ %d', '⚡︎%d', '✔ OK']
+let g:ale_echo_msg_format='[%linter%] %code: %%s'
+let g:ale_lint_on_text_changed='normal'
+let g:ale_lint_on_insert_leave=1
+let g:ale_c_gcc_options='-Wall -O2 -std=c99'
+let g:ale_cpp_gcc_options='-Wall -O2 -std=c++14'
+let g:ale_c_cppcheck_options=''
+let g:ale_cpp_cppcheck_options=''
+" <<<<<< <ALE 动态语法检测 <<<<<<
+
+" >>>>>> YouCompleteMe> >>>>>>
+let g:ycm_server_python_interpreter='/usr/bin/python3'
+let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+"let g:ycm_complete_in_comments=1                "补全功能在注释中同样有效
+"let g:ycm_confirm_extra_conf=0                  "允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
+"let g:ycm_collect_identifiers_from_tags_files=0 "开启 YCM 标签补全引擎
+"let g:ycm_min_num_of_chars_for_completion=1    "从第一个键入字符就开始罗列匹配项
+"let g:ycm_cache_omnifunc=0                      "禁止缓存匹配项，每次都重新生成匹配项
+"let g:ycm_seed_identifiers_with_syntax=1        "语法关键字补全
+
+"set completeopt-=preview                        "补全内容不以分割子窗口形式出现，只显示补全列表
+
+" YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
+"inoremap <leader>; <C-x><C-o>
+
+" YCM 补全菜单配色
+" 菜单
+"highlight Pmenu ctermfg=2 ctermbg=3 guifg=#005f87 guibg=#EEE8D5
+" 选中项
+"highlight PmenuSel ctermfg=2 ctermbg=3 guifg=#AFD700 guibg=#106900
+
+" 引入 C++ 标准库 tags
+"set tags+=/data/misc/software/app/vim/stdcpp.tags
+"set tags+=/data/misc/software/app/vim/sys.tags
+" <<<<<< <YouCompleteMe <<<<<<
+
+" >>>>>> 自动索引 vim-gutentags> >>>>>>
+" 搜索工程目录标志，碰到这些文件/目录名就停止向上一级目录递归
+let g:gutentags_project_root=['.root', '.svn', '.git', '.hg', '.project']
+
+" 配置ctags参数
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+" <<<<<< <自动索引 vim-gutentags <<<<<<
+
+" >>>>>> powerline> >>>>>>
+" 设置状态栏主题风格
+let g:Powerline_colorscheme='solarized256' 
+" <<<<<< <powerline <<<<<<
+
+" >>>>>> 标记marks vim-signature> >>>>>>
+" 自定义 vim-signature 快捷键
+let g:SignatureMap = {
+        \ 'Leader'             :  "m",
+        \ 'PlaceNextMark'      :  "m,",
+        \ 'ToggleMarkAtLine'   :  "m.",
+        \ 'PurgeMarksAtLine'   :  "m-",
+        \ 'DeleteMark'         :  "dm",
+        \ 'PurgeMarks'         :  "mda",
+        \ 'PurgeMarkers'       :  "m<BS>",
+        \ 'GotoNextLineAlpha'  :  "']",
+        \ 'GotoPrevLineAlpha'  :  "'[",
+        \ 'GotoNextSpotAlpha'  :  "`]",
+        \ 'GotoPrevSpotAlpha'  :  "`[",
+        \ 'GotoNextLineByPos'  :  "]'",
+        \ 'GotoPrevLineByPos'  :  "['",
+        \ 'GotoNextSpotByPos'  :  "mn",
+        \ 'GotoPrevSpotByPos'  :  "mp",
+        \ 'GotoNextMarker'     :  "[+",
+        \ 'GotoPrevMarker'     :  "[-",
+        \ 'GotoNextMarkerAny'  :  "]=",
+        \ 'GotoPrevMarkerAny'  :  "[=",
+        \ 'ListLocalMarks'     :  "ms",
+        \ 'ListLocalMarkers'   :  "m?"
+        \ }
+" <<<<<< <标记marks vim-signature <<<<<<
